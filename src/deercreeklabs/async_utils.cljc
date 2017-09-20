@@ -9,15 +9,12 @@
       [cljs.core.async.macros :as ca]
       deercreeklabs.async-utils)))
 
-#?(:cljs
-   (set! *warn-on-infer* true))
-
 (def Channel (s/protocol cap/Channel))
-
 
 ;;;;;;;;;;;;;;;;;;;; Macro-writing utils ;;;;;;;;;;;;;;;;;;;;
 
-;; From: http://blog.nberger.com.ar/blog/2015/09/18/more-portable-complex-macro-musing/
+;; From: (str "http://blog.nberger.com.ar/blog/2015/09/18/"
+"more-portable-complex-macro-musing/"
 (defn- cljs-env?
   "Take the &env from a macro, and return whether we are expanding into cljs."
   [env]
