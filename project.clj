@@ -1,4 +1,4 @@
-(defproject deercreeklabs/async-utils "0.1.2-SNAPSHOT"
+(defproject deercreeklabs/async-utils "0.1.2"
   :description
   "Utilities for async programming and testing in Clojure & Clojurescript"
   :url "http://www.deercreeklabs.com"
