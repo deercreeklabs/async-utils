@@ -13,11 +13,11 @@
   {:dev
    {:global-vars {*warn-on-reflection* true}
     :plugins
-    [[lein-ancient "0.6.10"]
+    [[lein-ancient "0.6.12"]
      [lein-cljsbuild "1.1.7" :exclusions [org.clojure/clojure]]
      [lein-cloverage "1.0.9" :exclusions [org.clojure/clojure]]
      [lein-doo "0.1.7"]
-     [lein-npm "0.6.2"]
+     [lein-npm "0.6.2" :exclusions [com.fasterxml.jackson.core/jackson-core]]
      ;; Because of confusion with a defunct project also called
      ;; lein-release, we exclude lein-release from lein-ancient.
      [lein-release "1.0.9" :upgrade false :exclusions [org.clojure/clojure]]]
