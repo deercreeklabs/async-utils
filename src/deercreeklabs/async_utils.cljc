@@ -29,7 +29,7 @@
 ;;;;;;;;;;;;;;;;;;;; core.async utils ;;;;;;;;;;;;;;;;;;;;
 
 
-(defmacro go-helper [ex-type body]
+(defmacro go-helper* [ex-type body]
   `(try
      ~@body
      (catch ~ex-type e#
@@ -38,28 +38,28 @@
 (defmacro go [& body]
   `(if-cljs
     (cljs.core.async.macros/go
-      (go-helper :default ~body))
+      (go-helper* :default ~body))
     (clojure.core.async/go
-      (go-helper Exception ~body))))
+      (go-helper* Exception ~body))))
 
-(defn check-ret [ret]
-  (if (instance? #?(:cljs js/Error :clj Throwable) ret)
-    (throw ret)
-    ret))
+(defn check [v]
+  (if (instance? #?(:cljs js/Error :clj Throwable) v)
+    (throw v)
+    v))
 
 (defmacro <? [ch-expr]
-  `(check-ret (clojure.core.async/<! ~ch-expr)))
+  `(check (clojure.core.async/<! ~ch-expr)))
 
 (defmacro alts? [chs-expr]
   `(let [[v# ch#] (clojure.core.async/alts! ~chs-expr)]
-     [(check-ret v#) ch#]))
+     [(check v#) ch#]))
 
 (defmacro <?? [ch-expr]
-  `(check-ret (clojure.core.async/<!! ~ch-expr)))
+  `(check (clojure.core.async/<!! ~ch-expr)))
 
 (defmacro alts?? [chs-expr]
   `(let [[v# ch#] (clojure.core.async/alts!! ~chs-expr)]
-     [(check-ret v#) ch#]))
+     [(check v#) ch#]))
 
 ;;;;;;;;;;;;;;;;;;;; Async test helpers ;;;;;;;;;;;;;;;;;;;;
 
@@ -82,10 +82,10 @@
   ([timeout-ms :- s/Num
     test-ch :- Channel]
    (let [ch (test-async* timeout-ms test-ch)]
-     #?(:clj (check-ret (ca/<!! ch))
+     #?(:clj (check (ca/<!! ch))
         :cljs (cljs.test/async
                done (ca/take! ch (fn [ret]
                                    (try
-                                     (check-ret ret)
+                                     (check ret)
                                      (finally
                                        (done))))))))))
