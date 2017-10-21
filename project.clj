@@ -13,16 +13,16 @@
   {:dev
    {:global-vars {*warn-on-reflection* true}
     :plugins
-    [[lein-ancient "0.6.12"]
+    [[lein-ancient "0.6.14"]
      [lein-cljsbuild "1.1.7" :exclusions [org.clojure/clojure]]
      [lein-cloverage "1.0.9" :exclusions [org.clojure/clojure]]
-     [lein-doo "0.1.7"]
+     [lein-doo "0.1.8"]
      [lein-npm "0.6.2" :exclusions [com.fasterxml.jackson.core/jackson-core]]
      ;; Because of confusion with a defunct project also called
      ;; lein-release, we exclude lein-release from lein-ancient.
      [lein-release "1.0.9" :upgrade false :exclusions [org.clojure/clojure]]]
     :dependencies
-    [[doo "0.1.7"]]}}
+    [[doo "0.1.8"]]}}
 
   :npm {:devDependencies [[karma "1.7.1"]
                           [karma-chrome-launcher "2.2.0"]
@@ -33,9 +33,9 @@
   :dependencies
   [[cljsjs/nodejs-externs "1.0.4-1"]
    [org.clojure/clojure "1.8.0"]
-   [org.clojure/clojurescript "1.9.908"]
+   [org.clojure/clojurescript "1.9.946"]
    [org.clojure/core.async "0.3.443"]
-   [prismatic/schema "1.1.6"]]
+   [prismatic/schema "1.1.7"]]
 
   :cljsbuild
   {:builds
