@@ -66,7 +66,7 @@
 (s/defn test-async* :- s/Any
   [timeout-ms :- s/Num
    test-ch :- Channel]
-  (ca/go
+  (go
     (let [[ret ch] (ca/alts! [test-ch (ca/timeout timeout-ms)])]
       (if (= test-ch ch)
         ret
@@ -82,7 +82,7 @@
   ([timeout-ms :- s/Num
     test-ch :- Channel]
    (let [ch (test-async* timeout-ms test-ch)]
-     #?(:clj (check (ca/<!! ch))
+     #?(:clj (<?? ch)
         :cljs (cljs.test/async
                done (ca/take! ch (fn [ret]
                                    (try
