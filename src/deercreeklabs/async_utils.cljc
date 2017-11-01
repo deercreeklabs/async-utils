@@ -66,7 +66,7 @@
 (s/defn test-async* :- s/Any
   [timeout-ms :- s/Num
    test-ch :- Channel]
-  (go
+  (deercreeklabs.async-utils/go
     (let [[ret ch] (ca/alts! [test-ch (ca/timeout timeout-ms)])]
       (if (= test-ch ch)
         ret
