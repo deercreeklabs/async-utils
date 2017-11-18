@@ -15,7 +15,7 @@
     :plugins
     [[lein-ancient "0.6.14"]
      [lein-cljsbuild "1.1.7" :exclusions [org.clojure/clojure]]
-     [lein-cloverage "1.0.9" :exclusions [org.clojure/clojure]]
+     [lein-cloverage "1.0.10" :exclusions [org.clojure/clojure]]
      [lein-doo "0.1.8"]
      [lein-npm "0.6.2" :exclusions [com.fasterxml.jackson.core/jackson-core]]
      ;; Because of confusion with a defunct project also called
@@ -34,7 +34,7 @@
   [[cljsjs/nodejs-externs "1.0.4-1"]
    [org.clojure/clojure "1.8.0"]
    [org.clojure/clojurescript "1.9.946"]
-   [org.clojure/core.async "0.3.443"]
+   [org.clojure/core.async "0.3.465"]
    [prismatic/schema "1.1.7"]]
 
   :cljsbuild
