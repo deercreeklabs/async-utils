@@ -1,3 +1,44 @@
+(def compiler-defaults
+  {:npm-deps {:websocket "1.0.25"}
+   :install-deps true
+   :parallel-build true
+   :static-fns true
+   ;; :pseudo-names true
+   ;; :pretty-print true
+   ;; :infer-externs true
+   :externs ["async_utils_externs.js"]})
+
+(defn make-build-conf [id target-kw build-type-kw opt-level main]
+  (let [build-type-str (name build-type-kw)
+        target-str (if target-kw
+                     (name target-kw)
+                     "")
+        node? (= :node target-kw)
+        source-paths (case build-type-kw
+                       :build ["src"]
+                       :test ["src" "test"])
+        build-name (str target-str "_" build-type-str "_" (name opt-level))
+        output-name (case build-type-kw
+                      :build "main.js"
+                      :test "test_main.js")
+        output-dir (str "target/" build-type-str "/" build-name)
+        output-to (str output-dir "/" output-name)
+        source-map (if (= :none opt-level)
+                     true
+                     (str output-dir "/map.js.map"))
+        compiler (cond-> compiler-defaults
+                   true (assoc :optimizations opt-level
+                               :output-to output-to
+                               :output-dir output-dir
+                               :source-map source-map)
+                   main (assoc :main main)
+                   node? (assoc :target :nodejs))
+        node-test? (and node? (= :test build-type-kw))]
+    (cond-> {:id id
+             :source-paths source-paths
+             :compiler compiler}
+      node-test? (assoc :notify-command ["node" output-to]))))
+
 (defproject deercreeklabs/async-utils "0.1.6-SNAPSHOT"
   :description
   "Utilities for async programming and testing in Clojure & Clojurescript"
@@ -7,7 +48,7 @@
   :lein-release {:scm :git
                  :deploy-via :clojars}
 
-  :pedantic? :abort
+  ;;:pedantic? :abort
 
   :profiles
   {:dev
@@ -39,86 +80,19 @@
 
   :cljsbuild
   {:builds
-   [{:id "node-test-none"
-     :source-paths ["src" "test"]
-     :notify-command ["node" "target/test/node_test_none/test_main.js"]
-     :compiler
-     {:optimizations :none
-      :parallel-build true
-      :main "deercreeklabs.node-test-runner"
-      :target :nodejs
-      :output-to "target/test/node_test_none/test_main.js"
-      :output-dir "target/test/node_test_none"
-      :source-map true}}
-    {:id "node-test-adv"
-     :source-paths ["src" "test"]
-     :notify-command ["node" "target/test/node_test_adv/test_main.js"]
-     :compiler
-     {:optimizations :advanced
-      ;; :pseudo-names true
-      ;; :pretty-print true
-      ;; :infer-externs true
-      :externs ["externs.js"]
-      :parallel-build true
-      :main "deercreeklabs.node-test-runner"
-      :target :nodejs
-      :static-fns true
-      :output-to  "target/test/node_test_adv/test_main.js"
-      :output-dir "target/test/node_test_adv"
-      :source-map "target/test/node_test_adv/map.js.map"}}
-    {:id "node-test-simple"
-     :source-paths ["src" "test"]
-     :notify-command ["node" "target/test/node_test_simple/test_main.js"]
-     :compiler
-     {:optimizations :simple
-      :parallel-build true
-      :main "deercreeklabs.node-test-runner"
-      :target :nodejs
-      :static-fns true
-      :output-to  "target/test/node_test_simple/test_main.js"
-      :output-dir "target/test/node_test_simple"
-      :source-map "target/test/node_test_simple/map.js.map"}}
-    {:id "doo-test-none"
-     :source-paths ["src" "test"]
-     :compiler
-     {:optimizations :none
-      :parallel-build true
-      :main "deercreeklabs.doo-test-runner"
-      :output-to "target/test/doo_test_none/test_main.js"
-      :output-dir "target/test/doo_test_none"
-      :source-map true}}
-    {:id "doo-test-simple"
-     :source-paths ["src" "test"]
-     :compiler
-     {:optimizations :simple
-      :parallel-build true
-      :main "deercreeklabs.doo-test-runner"
-      :output-to "target/test/doo_test_simple/test_main.js"
-      :output-dir "target/test/doo_test_simple"
-      :source-map "target/test/doo_test_simple/map.js.map"}}
-    {:id "doo-test-adv"
-     :source-paths ["src" "test"]
-     :compiler
-     {:optimizations :advanced
-      ;; :pseudo-names true
-      ;; :pretty-print true
-      ;; :infer-externs true
-      :externs ["externs.js"]
-      :parallel-build true
-      :main "deercreeklabs.doo-test-runner"
-      :static-fns true
-      :output-to  "target/test/doo_test_adv/test_main.js"
-      :output-dir "target/test/doo_test_adv"
-      :source-map "target/test/doo_test_adv/map.js.map"}}
-    {:id "build-simple"
-     :source-paths ["src"]
-     :compiler
-     {:optimizations :simple
-      :parallel-build true
-      :static-fns true
-      :output-to  "target/build_simple/tube.js"
-      :output-dir "target/build_simple"
-      :source-map "target/build_simple/map.js.map"}}]}
+   [~(make-build-conf "node-test-none" :node :test :none
+                      "deercreeklabs.node-test-runner")
+    ~(make-build-conf "node-test-simple" :node :test :simple
+                      "deercreeklabs.node-test-runner")
+    ~(make-build-conf "node-test-adv" :node :test :advanced
+                      "deercreeklabs.node-test-runner")
+    ~(make-build-conf "doo-test-none" :doo :test :none
+                      "deercreeklabs.doo-test-runner")
+    ~(make-build-conf "doo-test-simple" :doo :test :simple
+                      "deercreeklabs.doo-test-runner")
+    ~(make-build-conf "doo-test-adv" :doo :test :advanced
+                      "deercreeklabs.doo-test-runner")
+    ~(make-build-conf "build-adv" nil :build :advanced nil)]}
 
   :aliases
   {"auto-test-cljs" ["do"
@@ -130,9 +104,9 @@
    "auto-test-cljs-simple" ["do"
                             "clean,"
                             "cljsbuild" "auto" "node-test-simple"]
-   "build-simple" ["do"
-                   "clean,"
-                   "cljsbuild" "once" "build-simple"]
+   "build-adv" ["do"
+                "clean,"
+                "cljsbuild" "once" "build-adv"]
    "chrome-test" ["do"
                   "clean,"
                   "doo" "chrome" "doo-test-adv"]})
