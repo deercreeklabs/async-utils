@@ -32,7 +32,7 @@
 
   :dependencies
   [[cljsjs/nodejs-externs "1.0.4-1"]
-   [org.clojure/clojure "1.8.0"]
+   [org.clojure/clojure "1.9.0-beta4"]
    [org.clojure/clojurescript "1.9.946"]
    [org.clojure/core.async "0.3.465"]
    [prismatic/schema "1.1.7"]]

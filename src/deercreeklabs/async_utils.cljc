@@ -6,7 +6,6 @@
    [schema.core :as s :include-macros true])
   #?(:cljs
      (:require-macros
-      [cljs.core.async.macros :as ca]
       deercreeklabs.async-utils)))
 
 (def Channel (s/protocol cap/Channel))
@@ -37,7 +36,7 @@
 
 (defmacro go [& body]
   `(if-cljs
-    (cljs.core.async.macros/go
+    (clojure.core.async/go
       (go-helper* :default ~body))
     (clojure.core.async/go
       (go-helper* Exception ~body))))

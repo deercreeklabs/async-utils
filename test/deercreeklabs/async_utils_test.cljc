@@ -2,10 +2,7 @@
   (:require
    [clojure.core.async :as ca]
    [clojure.test :refer [deftest is]]
-   [deercreeklabs.async-utils :as au])
-  #?(:cljs
-     (:require-macros
-      [cljs.core.async.macros :as ca])))
+   [deercreeklabs.async-utils :as au]))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Unit tests
