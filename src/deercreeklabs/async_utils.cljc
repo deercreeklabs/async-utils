@@ -27,6 +27,8 @@
 
 ;;;;;;;;;;;;;;;;;;;; core.async utils ;;;;;;;;;;;;;;;;;;;;
 
+(defn channel? [x]
+  (satisfies? cap/Channel x))
 
 (defmacro go-helper* [ex-type body]
   `(try

@@ -7,6 +7,10 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Unit tests
 
+(deftest test-channel?
+  (is (au/channel? (ca/chan)))
+  (is (not (au/channel? :not-a-chan))))
+
 (deftest test-<?
   (au/test-async
    (ca/go
