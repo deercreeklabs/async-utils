@@ -73,7 +73,7 @@
   :dependencies
   [[cljsjs/nodejs-externs "1.0.4-1"]
    [org.clojure/clojure "1.9.0"]
-   [org.clojure/clojurescript "1.10.238"]
+   [org.clojure/clojurescript "1.10.312"]
    [org.clojure/core.async "0.4.474"]
    [prismatic/schema "1.1.9"]]
 
