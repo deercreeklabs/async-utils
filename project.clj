@@ -37,7 +37,7 @@
              :compiler compiler}
       node-test? (assoc :notify-command ["node" output-to]))))
 
-(defproject deercreeklabs/async-utils "0.1.11-SNAPSHOT"
+(defproject deercreeklabs/async-utils "0.1.11"
   :description
   "Utilities for async programming and testing in Clojure & Clojurescript"
   :url "http://www.deercreeklabs.com"
@@ -54,7 +54,7 @@
     :plugins
     [[lein-ancient "0.6.15"]
      [lein-cljsbuild "1.1.7" :exclusions [org.clojure/clojure]]
-     [lein-cloverage "1.0.10" :exclusions [org.clojure/clojure]]
+     [lein-cloverage "1.0.11" :exclusions [org.clojure/clojure]]
      [lein-doo "0.1.10"
       :exclusions [org.clojure/clojure org.clojure/clojurescript]]
      [lein-npm "0.6.2" :exclusions [com.fasterxml.jackson.core/jackson-core]]
@@ -73,7 +73,7 @@
   :dependencies
   [[cljsjs/nodejs-externs "1.0.4-1"]
    [org.clojure/clojure "1.9.0"]
-   [org.clojure/clojurescript "1.10.312"]
+   [org.clojure/clojurescript "1.10.339"]
    [org.clojure/core.async "0.4.474"]
    [prismatic/schema "1.1.9"]]
 
