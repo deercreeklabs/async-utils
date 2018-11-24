@@ -1,5 +1,6 @@
 (def compiler-defaults
-  {:parallel-build true
+  {:npm-deps {:source-map-support "0.5.9"}
+   :parallel-build true
    :static-fns true
    ;; :pseudo-names true
    ;; :pretty-print true
@@ -54,27 +55,26 @@
     :plugins
     [[lein-ancient "0.6.15"]
      [lein-cljsbuild "1.1.7" :exclusions [org.clojure/clojure]]
-     [lein-cloverage "1.0.11" :exclusions [fipp org.clojure/clojure]]
-     [lein-doo "0.1.10"
+     [lein-cloverage "1.0.13" :exclusions [fipp org.clojure/clojure]]
+     [lein-doo "0.1.11"
       :exclusions [org.clojure/clojure org.clojure/clojurescript]]
      [lein-npm "0.6.2" :exclusions [com.fasterxml.jackson.core/jackson-core]]
      ;; Because of confusion with a defunct project also called
      ;; lein-release, we exclude lein-release from lein-ancient.
      [lein-release "1.0.9" :upgrade false :exclusions [org.clojure/clojure]]]
     :dependencies
-    [[doo "0.1.10"]]}}
+    [[doo "0.1.11"]]}}
 
   :npm {:devDependencies [[karma "1.7.1"]
                           [karma-chrome-launcher "2.2.0"]
                           [karma-cljs-test "0.1.0"]
-                          [karma-firefox-launcher "1.0.1"]
-                          [source-map-support "0.4.17"]]}
+                          [karma-firefox-launcher "1.0.1"]]}
 
   :dependencies
-  [[cljsjs/nodejs-externs "1.0.4-1"]
+  [[com.google.guava/guava "27.0-jre"]
    [org.clojure/clojure "1.9.0"]
-   [org.clojure/clojurescript "1.10.339"]
-   [org.clojure/core.async "0.4.474"]
+   [org.clojure/clojurescript "1.10.439"]
+   [org.clojure/core.async "0.4.490"]
    [prismatic/schema "1.1.9"]]
 
   :cljsbuild
