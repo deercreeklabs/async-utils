@@ -72,7 +72,7 @@
 
   :dependencies
   [[com.google.guava/guava "27.0-jre"]
-   [org.clojure/clojure "1.9.0"]
+   [org.clojure/clojure "1.10.0"]
    [org.clojure/clojurescript "1.10.439"]
    [org.clojure/core.async "0.4.490"]
    [prismatic/schema "1.1.9"]]
