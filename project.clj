@@ -38,7 +38,7 @@
              :compiler compiler}
       node-test? (assoc :notify-command ["node" output-to]))))
 
-(defproject deercreeklabs/async-utils "0.1.14"
+(defproject deercreeklabs/async-utils "0.1.15-SNAPSHOT"
   :description
   "Utilities for async programming and testing in Clojure & Clojurescript"
   :url "http://www.deercreeklabs.com"
