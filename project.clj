@@ -65,10 +65,10 @@
     :dependencies
     [[doo "0.1.11"]]}}
 
-  :npm {:devDependencies [[karma "1.7.1"]
+  :npm {:devDependencies [[karma "3.1.4"]
                           [karma-chrome-launcher "2.2.0"]
                           [karma-cljs-test "0.1.0"]
-                          [karma-firefox-launcher "1.0.1"]]}
+                          [karma-firefox-launcher "1.1.0"]]}
 
   :dependencies
   [[com.google.guava/guava "27.0-jre"]
