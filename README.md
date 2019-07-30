@@ -8,8 +8,7 @@ Utilities for async programming and testing in Clojure & Clojurescript
 
 ## License
 
-Copyright (c) 2017 Deer Creek Labs, LLC
-Some portions Copyright (c) 2015-2016 FarBetter, Inc.
+Copyright Deer Creek Labs, LLC
 
 
 Distributed under the Apache Software License, Version 2.0
