@@ -4,7 +4,7 @@
   <groupId>deercreeklabs</groupId>
   <artifactId>async-utils</artifactId>
   <packaging>jar</packaging>
-  <version>0.1.17</version>
+  <version>0.1.18</version>
   <name>async-utils</name>
   <description>Utilities for async programming and testing in Clojure and Clojurescript</description>
   <url>https://github.com/deercreeklabs/async-utils</url>
@@ -43,7 +43,7 @@
       <version>0.4.500</version>
     </dependency>
     <dependency>
-      <groupId>dept24c</groupId>
+      <groupId>prismatic</groupId>
       <artifactId>schema</artifactId>
       <version>1.1.12</version>
     </dependency>
