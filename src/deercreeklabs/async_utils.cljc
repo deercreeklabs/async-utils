@@ -70,7 +70,7 @@
   (deercreeklabs.async-utils/go
     (let [[ret ch] (ca/alts! [test-ch (ca/timeout timeout-ms)])]
       (if (= test-ch ch)
-        ret
+        (check ret)
         (throw (ex-info (str "Async test did not complete within "
                              timeout-ms " ms.")
                         {:type :test-failure
