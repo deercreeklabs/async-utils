@@ -86,7 +86,7 @@
 
 (defn <foo []
   (au/go
-    (throw (ex-info "A bald error was encountered" {}))))
+    (throw (ex-info "A bad error was encountered" {}))))
 
 (deftest test-<is-thrown-with-msg?
   (au/test-async
