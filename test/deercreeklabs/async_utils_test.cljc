@@ -55,7 +55,7 @@
          (au/alts?? [(f) (ca/timeout 100)])
          (is (= :should-not-get-here :here)))
        (catch #?(:clj Exception :cljs js/Error) e
-           (is (= :execution-error (-> e ex-data :type)))))))
+         (is (= :execution-error (-> e ex-data :type)))))))
 
 (deftest test-alts?-no-throw
   (au/test-async
@@ -69,7 +69,7 @@
          (is (= f-ch ch))
          (is (= :winner-winner ret)))
        (catch #?(:clj Exception :cljs js/Error) e
-           (is (= :should-not-get-here :here)))))))
+         (is (= :should-not-get-here :here)))))))
 
 #?(:clj
    (deftest test-alts??-no-throw
@@ -82,4 +82,13 @@
          (is (= f-ch ch))
          (is (= :winner-winner ret)))
        (catch #?(:clj Exception :cljs js/Error) e
-           (is (= :should-not-get-here :here))))))
+         (is (= :should-not-get-here :here))))))
+
+(defn <foo []
+  (au/go
+    (throw (ex-info "A bald error was encountered" {}))))
+
+(deftest test-<is-thrown-with-msg?
+  (au/test-async
+   (ca/go
+     (au/<is-thrown-with-msg? #"bad error" (<foo)))))

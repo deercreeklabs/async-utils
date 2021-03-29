@@ -3,12 +3,10 @@
    #?(:cljs [cljs.test])
    [clojure.core.async :as ca]
    [clojure.core.async.impl.protocols :as cap]
-   [schema.core :as s :include-macros true])
+   [clojure.test :as t])
   #?(:cljs
      (:require-macros
       deercreeklabs.async-utils)))
-
-(def Channel (s/protocol cap/Channel))
 
 ;;;;;;;;;;;;;;;;;;;; Macro-writing utils ;;;;;;;;;;;;;;;;;;;;
 
@@ -38,10 +36,10 @@
 
 (defmacro go [& body]
   `(if-cljs
-    (clojure.core.async/go
-      (go-helper* :default ~body))
-    (clojure.core.async/go
-      (go-helper* Exception ~body))))
+       (clojure.core.async/go
+         (go-helper* :default ~body))
+     (clojure.core.async/go
+       (go-helper* Exception ~body))))
 
 (defn check [v]
   (if (instance? #?(:cljs js/Error :clj Throwable) v)
@@ -64,9 +62,8 @@
 
 ;;;;;;;;;;;;;;;;;;;; Async test helpers ;;;;;;;;;;;;;;;;;;;;
 
-(s/defn test-async* :- s/Any
-  [timeout-ms :- s/Num
-   test-ch :- Channel]
+(defn test-async*
+  [timeout-ms test-ch]
   (deercreeklabs.async-utils/go
     (let [[ret ch] (ca/alts! [test-ch (ca/timeout timeout-ms)])]
       (if (= test-ch ch)
@@ -77,11 +74,10 @@
                          :subtype :async-test-timeout
                          :timeout-ms timeout-ms}))))))
 
-(s/defn test-async :- s/Any
-  ([test-ch :- Channel]
+(defn test-async
+  ([test-ch]
    (test-async 1000 test-ch))
-  ([timeout-ms :- s/Num
-    test-ch :- Channel]
+  ([timeout-ms test-ch]
    (let [ch (test-async* timeout-ms test-ch)]
      #?(:clj (<?? ch)
         :cljs (cljs.test/async
@@ -90,3 +86,32 @@
                                      (check ret)
                                      (finally
                                        (done))))))))))
+
+(defmacro <catch-msg-helper* [taker ch-expr]
+  `(let [ret# ~ch-expr]
+     (if-not (channel? ret#)
+       "Given expression did not evaluate to a channel."
+       (let [v# (~taker ret#)]
+         (if-not (instance? #?(:cljs js/Error :clj Throwable) v#)
+           "No exception thrown by expression"
+           (ex-message v#))))))
+
+(defmacro <catch-msg! [ch-expr]
+  `(<catch-msg-helper* clojure.core.async/<! ~ch-expr))
+
+(defmacro <catch-msg!! [ch-expr]
+  `(<catch-msg-helper* clojure.core.async/<!! ~ch-expr))
+
+(defmacro <is-thrown-with-msg? [regex & form]
+  (let [expected (str "Throws with message that matches #\"" regex "\"")]
+    `(let [ex-msg# (<catch-msg! ~@form)
+           actual# (str "Threw with mesage `" ex-msg#)
+           ret# (re-find ~regex ex-msg#)]
+       (if ret#
+         (clojure.test/do-report {:type :pass
+                                  :expected ~expected
+                                  :actual actual#})
+         (clojure.test/do-report {:type :fail
+                                  :expected ~expected
+                                  :actual actual#}))
+       ret#)))
