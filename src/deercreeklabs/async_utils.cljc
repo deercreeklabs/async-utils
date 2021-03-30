@@ -89,18 +89,16 @@
 
 (defmacro <catch-msg-helper* [taker ch-expr]
   `(let [ret# ~ch-expr]
-     (if-not (channel? ret#)
-       "Given expression did not evaluate to a channel."
-       (let [v# (~taker ret#)]
-         (if-not (instance? #?(:cljs js/Error :clj Throwable) v#)
-           "No exception thrown by expression"
-           (ex-message v#))))))
+     (if (channel? ret#)
+       (ex-message (~taker ret#))
+       "Given expression did not evaluate to a channel.")))
 
 (defmacro <catch-msg! [ch-expr]
   `(<catch-msg-helper* clojure.core.async/<! ~ch-expr))
 
-(defmacro <catch-msg!! [ch-expr]
-  `(<catch-msg-helper* clojure.core.async/<!! ~ch-expr))
+#?(:clj
+   (defmacro <catch-msg!! [ch-expr]
+     `(<catch-msg-helper* clojure.core.async/<!! ~ch-expr)))
 
 (defmacro <is-thrown-with-msg? [regex & form]
   (let [expected (str "Throws with message that matches #\"" regex "\"")]

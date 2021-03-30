@@ -28,10 +28,11 @@
                        :sha "0e8731e0f24db05b74769e219051b0e92b50624a"}}
          :main-opts ["-m"]}
 
-  :test {:extra-paths ["test"]
-         :extra-deps {lambdaisland/kaocha {:mvn/version "1.0.829"}
-                      lambdaisland/kaocha-cljs {:mvn/version "0.0-71"}
-                      lambdaisland/kaocha-cloverage {:mvn/version "1.0.75"}
-                      org.clojure/clojure {:mvn/version "1.10.3"}
-                      org.clojure/clojurescript {:mvn/version "1.10.773"}
-                      thheller/shadow-cljs {:mvn/version "2.11.8"}}}}}
+  :test-clj {:extra-paths ["test"]
+             :extra-deps {com.cognitect/test-runner
+                          {:git/url "https://github.com/cognitect-labs/test-runner.git"
+                           :sha "b6b3193fcc42659d7e46ecd1884a228993441182"}}
+             :main-opts ["-m" "cognitect.test-runner"]}
+
+  :test-cljs {:extra-paths ["test"]
+              :extra-deps {thheller/shadow-cljs {:mvn/version "2.11.18"}}}}}
