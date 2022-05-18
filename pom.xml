@@ -4,7 +4,7 @@
   <groupId>deercreeklabs</groupId>
   <artifactId>async-utils</artifactId>
   <packaging>jar</packaging>
-  <version>0.1.23</version>
+  <version>0.1.24</version>
   <name>async-utils</name>
   <description>Utilities for async programming and testing in Clojure and Clojurescript</description>
   <url>https://github.com/deercreeklabs/async-utils</url>
@@ -30,12 +30,12 @@
     <dependency>
       <groupId>org.clojure</groupId>
       <artifactId>clojure</artifactId>
-      <version>1.10.2</version>
+      <version>1.11.1</version>
     </dependency>
     <dependency>
       <groupId>org.clojure</groupId>
       <artifactId>core.async</artifactId>
-      <version>1.3.610</version>
+      <version>1.5.648</version>
     </dependency>
   </dependencies>
   <build>
