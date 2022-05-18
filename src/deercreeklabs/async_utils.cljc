@@ -49,15 +49,15 @@
 (defmacro <? [ch-expr]
   `(check (clojure.core.async/<! ~ch-expr)))
 
-(defmacro alts? [chs-expr]
-  `(let [[v# ch#] (clojure.core.async/alts! ~chs-expr)]
+(defmacro alts? [chs-expr & opts]
+  `(let [[v# ch#] (clojure.core.async/alts! ~chs-expr ~@opts)]
      [(check v#) ch#]))
 
 (defmacro <?? [ch-expr]
   `(check (clojure.core.async/<!! ~ch-expr)))
 
-(defmacro alts?? [chs-expr]
-  `(let [[v# ch#] (clojure.core.async/alts!! ~chs-expr)]
+(defmacro alts?? [chs-expr & opts]
+  `(let [[v# ch#] (clojure.core.async/alts!! ~chs-expr ~@opts)]
      [(check v#) ch#]))
 
 ;;;;;;;;;;;;;;;;;;;; Async test helpers ;;;;;;;;;;;;;;;;;;;;
