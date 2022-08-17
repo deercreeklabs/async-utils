@@ -63,22 +63,26 @@
 ;;;;;;;;;;;;;;;;;;;; Async test helpers ;;;;;;;;;;;;;;;;;;;;
 
 (defn test-async*
-  [timeout-ms test-ch]
+  [timeout-ms test-ch *fns]
   (deercreeklabs.async-utils/go
     (let [[ret ch] (ca/alts! [test-ch (ca/timeout timeout-ms)])]
       (if (= test-ch ch)
         (check ret)
-        (throw (ex-info (str "Async test did not complete within "
+        (do
+         (when *fns (doseq [f @*fns] (f)))
+         (throw (ex-info (str "Async test did not complete within "
                              timeout-ms " ms.")
                         {:type :test-failure
                          :subtype :async-test-timeout
-                         :timeout-ms timeout-ms}))))))
+                         :timeout-ms timeout-ms})))))))
 
 (defn test-async
   ([test-ch]
    (test-async 1000 test-ch))
   ([timeout-ms test-ch]
-   (let [ch (test-async* timeout-ms test-ch)]
+   (test-async 1000 test-ch nil))
+  ([timeout-ms test-ch *fns]
+   (let [ch (test-async* timeout-ms test-ch *fns)]
      #?(:clj (<?? ch)
         :cljs (cljs.test/async
                done (ca/take! ch (fn [ret]
