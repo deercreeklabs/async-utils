@@ -80,7 +80,7 @@
   ([test-ch]
    (test-async 1000 test-ch))
   ([timeout-ms test-ch]
-   (test-async 1000 test-ch nil))
+   (test-async timeout-ms test-ch nil))
   ([timeout-ms test-ch *fns]
    (let [ch (test-async* timeout-ms test-ch *fns)]
      #?(:clj (<?? ch)
