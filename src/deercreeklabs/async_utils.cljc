@@ -85,11 +85,12 @@
    (let [ch (test-async* timeout-ms test-ch *fns)]
      #?(:clj (<?? ch)
         :cljs (cljs.test/async
-               done (ca/take! ch (fn [ret]
-                                   (try
-                                     (check ret)
-                                     (finally
-                                       (done))))))))))
+               done (ca/take!
+                     ch
+                     (fn [ret]
+                       (when (instance? js/Error ret)
+                         (t/is (= :error ret)))
+                       (done))))))))
 
 (defmacro <catch-msg-helper* [taker ch-expr]
   `(let [ret# ~ch-expr]
